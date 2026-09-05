@@ -51,25 +51,28 @@ public class SpleefCompetition extends LiveCompetition<SpleefCompetition> {
 
                 Collections.shuffle(blocks);
 
-                long totalDecayTimeTicks = layerDecayTime.getSeconds() * 20;
-                long intervalBetweenDecayTicks = totalDecayTimeTicks / blocks.size();
+                if (blocks.isEmpty()) {
+                    return;
+                }
+
+                long totalDecayTimeTicks = Math.max(1, layerDecayTime.toMillis() / 50);
+                LayerDecayProgress progress = new LayerDecayProgress(blocks.size(), totalDecayTimeTicks);
 
                 this.decayTasks.add(new BukkitRunnable() {
                     private int index = 0;
 
                     @Override
                     public void run() {
-                        if (index >= blocks.size()) {
-                            this.cancel();
-                            return;
+                        int count = progress.nextBatchSize();
+                        for (int i = 0; i < count; i++) {
+                            blocks.get(this.index++).setType(Material.AIR);
                         }
 
-                        Block block = blocks.get(index);
-                        block.setType(Material.AIR);
-
-                        this.index++;
+                        if (this.index >= blocks.size()) {
+                            this.cancel();
+                        }
                     }
-                }.runTaskTimer(ArenaSpleef.getInstance(), 0, intervalBetweenDecayTicks));
+                }.runTaskTimer(ArenaSpleef.getInstance(), 1, 1));
             }, delay);
 
             this.decayTasks.add(decayTask);
