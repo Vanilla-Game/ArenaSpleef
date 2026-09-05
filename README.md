@@ -2,6 +2,20 @@
 
 A spleef plugin using [BattleArena](https://github.com/BattlePlugins/BattleArena)
 
+## Vanilla-Game fork
+
+This fork fixes automatic layer decay timing. `layer-decay-time: 20s` removes
+a complete layer over 400 server ticks, including layers larger than 400 blocks.
+Blocks still disappear in random order. At less than 20 TPS, elapsed real time
+will be longer. Durations below one tick are clamped to one tick.
+
+`layer-decay-delay` still controls successive start times from the beginning of
+the match: with `2m`, layers start decaying from top to bottom at 2, 4, 6 minutes,
+and so on. Finishing the match cancels pending and active layer decay tasks.
+
+Build and run the regression tests with JDK 17 and `./gradlew build`.
+The fork artifact is `build/libs/ArenaSpleef.jar`, version `2.0.1-vg.1-SNAPSHOT`.
+
 ArenaSpleef is the classic spleef plugin that dates back to the early days of Minecraft, but features multiple modes!
 
 ## Spleef Modes

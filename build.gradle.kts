@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "org.battleplugins.arena"
-version = "2.0.1-SNAPSHOT"
+version = "2.0.1-vg.1-SNAPSHOT"
 
 val supportedVersions = listOf(
     "1.19.4",
@@ -27,9 +27,14 @@ repositories {
 dependencies {
     api("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
     api("org.battleplugins:arena:4.0.0-SNAPSHOT")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
 }
 
 tasks {
+    test {
+        useJUnitPlatform()
+    }
+
     runServer {
         minecraftVersion("1.20.6")
 
