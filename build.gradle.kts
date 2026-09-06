@@ -28,6 +28,7 @@ dependencies {
     api("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
     api("org.battleplugins:arena:4.0.0-SNAPSHOT")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    testImplementation("org.mockito:mockito-core:5.11.0")
 }
 
 tasks {
