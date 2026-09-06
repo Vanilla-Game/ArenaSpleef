@@ -21,12 +21,35 @@ public class SpleefCompetition extends LiveCompetition<SpleefCompetition> {
 
     private final List<BukkitTask> decayTasks = new ArrayList<>();
     private final List<Position> pendingDecays = new ArrayList<>();
+    private BukkitTask boundaryTask;
 
     public SpleefCompetition(SpleefArena arena, CompetitionType type, SpleefMap map) {
         super(arena, type, map);
 
         this.arena = arena;
         this.map = map;
+    }
+
+    public void beginBoundaryChecks() {
+        this.stopBoundaryChecks();
+        if (this.arena.isLeaveOnBoundaryExit()) {
+            this.boundaryTask = Bukkit.getScheduler().runTaskTimer(
+                    ArenaSpleef.getInstance(), () -> BoundaryExitCheck.check(this), 20, 20);
+        }
+    }
+
+    public void stopBoundaryChecks() {
+        if (this.boundaryTask != null) {
+            this.boundaryTask.cancel();
+            this.boundaryTask = null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        this.stopBoundaryChecks();
+        this.stopLayerDecay();
+        super.onDestroy();
     }
 
     public void beginLayerDecay() {

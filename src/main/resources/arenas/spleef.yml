@@ -15,6 +15,7 @@ victory-conditions:
   time-limit:
     time-limit: 5m
 layer-decay-delay: 2m
+leave-on-boundary-exit: true
 layer-decay-time: 1m
 game: classic
 events:

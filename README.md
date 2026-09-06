@@ -15,6 +15,24 @@ For examples configurations of these modes, check out the [templates](https://gi
 ## Documentation
 Full documentation for ArenaSpleef can be found on the [BattleDocs](https://docs.battleplugins.org/books/additional-gamemodes/chapter/spleef) website.
 
+### Leaving the map during a match
+
+`leave-on-boundary-exit: true` (enabled by default) checks active participants
+every 20 server ticks during the `ingame` phase. A participant outside the map's
+`bounds`, or in a different world, leaves through BattleArena's normal leave API.
+At 20 TPS this takes up to one second after leaving. Only the position at the
+time of the check matters; a player who returns before that check stays in the match.
+Spectators and players in waiting, countdown, or victory are not checked.
+Maps without bounds are skipped. Set the option to `false` to disable this behavior.
+
+This works alongside `boundary-enforcer`: keep that module enabled to prevent
+walking across the boundary. The periodic check handles participants who still
+end up outside, for example after a teleport.
+The usual `on-leave` actions still run. In particular, `restore{types=all}` also
+restores the saved location, so leaving via `/home` or `/spawn` can return the
+player to their pre-match location. Cancelled teleports do not cause an exit
+when the player remains inside the map.
+
 ## Commands
 | Command                               | Description                                    |
 |---------------------------------------|------------------------------------------------|

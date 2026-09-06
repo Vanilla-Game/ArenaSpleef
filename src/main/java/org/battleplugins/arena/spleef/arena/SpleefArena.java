@@ -40,6 +40,9 @@ import java.time.Duration;
 
 public class SpleefArena extends Arena {
 
+    @ArenaOption(name = "leave-on-boundary-exit", description = "Leave an active match when outside the map bounds or world.")
+    private boolean leaveOnBoundaryExit = true;
+
     @ArenaOption(name = "layer-decay-delay", description = "The delay before each layer decays.")
     private Duration layerDecayDelay = Duration.ofMinutes(2);
 
@@ -75,6 +78,7 @@ public class SpleefArena extends Arena {
 
         if (event.getCompetition() instanceof SpleefCompetition spleefCompetition) {
             spleefCompetition.beginLayerDecay();
+            spleefCompetition.beginBoundaryChecks();
         }
     }
 
@@ -86,6 +90,7 @@ public class SpleefArena extends Arena {
 
         if (event.getCompetition() instanceof SpleefCompetition spleefCompetition) {
             spleefCompetition.stopLayerDecay();
+            spleefCompetition.stopBoundaryChecks();
         }
     }
 
@@ -219,5 +224,9 @@ public class SpleefArena extends Arena {
 
     public SpleefGame getGame() {
         return this.game;
+    }
+
+    public boolean isLeaveOnBoundaryExit() {
+        return this.leaveOnBoundaryExit;
     }
 }
